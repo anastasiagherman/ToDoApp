@@ -1,0 +1,9 @@
+{
+    "name": "angherman/to-do-app",
+    "description": "Composer for ToDoApp project",
+    "license": "MIT",
+    "require": {
+        "friendsofphp/php-cs-fixer": "^3.8",
+        "phpstan/phpstan": "^1.4"
+    }
+}
