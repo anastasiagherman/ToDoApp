@@ -1,6 +1,6 @@
 <?php
 
-define('DATABASE_PATH', getcwd() . '/todo.json');
+#define('DATABASE_PATH', getcwd() . '/todo.json');
 DEFINE('PREFIX', "TODO-");
 
 function main(string $command, array $arguments):void

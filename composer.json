@@ -5,5 +5,10 @@
     "require": {
         "friendsofphp/php-cs-fixer": "^3.8",
         "phpstan/phpstan": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "ToDoApp\\": "src"
+        }
     }
 }
