@@ -20,5 +20,6 @@ $command = array_shift($argv); // list
 $args = $argv; // []
 main($command, $args);
 */
+//print("\n".getcwd()."\n");
 $application = new Application(getcwd() . '/todo.json', "TODO-");
 $application -> run();

@@ -1,1 +1,16 @@
-[]
+[
+    {
+        "id": "TODO-1",
+        "content": "Do homework",
+        "status": "new",
+        "createdAt": "2022-04-05 11:49:01",
+        "dueDate": "04\/15\/2022 12:00:00"
+    },
+    {
+        "id": "TODO-2",
+        "content": "Read a book",
+        "status": "new",
+        "createdAt": "2022-04-05 11:51:31",
+        "dueDate": "06\/05\/2022 12:30:00"
+    }
+]

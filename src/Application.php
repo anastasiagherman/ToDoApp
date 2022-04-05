@@ -25,7 +25,7 @@ class Application
                     'help' => $this->help(),
                     "add" => $this->addItem(readline("new item> "), readline("due-date> ")),
                     "delete" => $this->deleteItem(readline("item to delete> ")),
-                    "update" => $this->updateItem(readline("item ID> "), readline("item new content> "), readline("item new due date")),
+                    "update" => $this->updateItem(readline("item ID> "), readline("item new content> "), readline("item new due date> ")),
                     "set-status" => $this->setStatus(readline("item ID> "), readline("item new status> ")),
                     "find" => $this->findItem(readline("content to search> ")),
                     default => print "Command $cmd not supported" . PHP_EOL
@@ -47,35 +47,33 @@ class Application
     public function setStatus(string $idToEdit, string $newStatus): void
     {
         $index = array_search($idToEdit, array_column($this->items, "id"));
-        $items[$index]["createdAt"] = date('Y-m-d H:i');
-        $items[$index]["status"] = $newStatus;
+        $this->items[$index]->setStatus($newStatus);
         print "Te status of $idToEdit was updated." . PHP_EOL . PHP_EOL;
     }
 
     public function updateItem(string $idToUpdate, string $newContent, string $newDueDate): void
     {
         if (!$idToUpdate) {
-            throw new LogicExeption("No items to update");
+            throw new LogicExeption("You didn't provide id to update");
         }
         $index = array_search($idToUpdate, array_column($this->items, "id"));
-        $items[$index]["content"] = ;
-        //$index-> setContent($newContent);
-        $items[$index]["createdAt"] = date('Y-m-d H:i');
-        $items[$index]["status"] = "updated";
-        $items[$index]["dueDate"] = $newDueDate;
+        $this->items[$index]->setContent($newContent);
+        $this->items[$index]->setStatus("updated");
+        $this->items[$index]->setDueDate($newDueDate);
         print "Item $idToUpdate was updated." . PHP_EOL . PHP_EOL;
     }
 
     public function findItem(string $contentToFind): void
     {
         if (empty($contentToFind)) {
-            throw new LogicExeptions("No items to update");
+            throw new LogicExeptions("You didn't provide any content");
         }
 
         $index = array_search($contentToFind, array_column($this->items, "content"));
-        print " - {$this->items[$index]["id"]}from {$this->items[$index]["created at"]}" . PHP_EOL;
-        print "   Content  : {$this->items[$index]["content"]}" . PHP_EOL;
-        print "   Status   : {$this->items[$index]["status"]}" . PHP_EOL . PHP_EOL;
+        print " [] {$this->items[$index]->getId()} from {$this->items[$index]->getCreatedAt()}" . PHP_EOL;
+        print "   Content  : {$this->items[$index]->getContent()}" . PHP_EOL;
+        print "   Due-date : {$this->items[$index]->getDueDate()}" . PHP_EOL;
+        print "   Status   : {$this->items[$index]->getStatus()}" . PHP_EOL . PHP_EOL;
     }
 
     public function deleteItem(string $idToDelete): void
@@ -86,7 +84,7 @@ class Application
 
         $filteredItems = array_filter($this->items, fn(Item $item) => $item->getId() !== $idToDelete);
         if (count($this->items) > count($filteredItems)) {
-            save_to_file($filteredItems);
+            $this->saveItems($filteredItems);
             print "Item $idToDelete was deleted" . PHP_EOL . PHP_EOL;
         } else {
             print "Nothing to delete" . PHP_EOL . PHP_EOL;
@@ -105,7 +103,6 @@ class Application
 
     public function addItem(string $content, string $dueDate): Item
     {
-        print($dueDate);
         if (empty($content)) {
             throw new LogicExeption("You didn't provide item content.");
         }
@@ -123,6 +120,7 @@ class Application
         );
 
         $this->items[] = $item;
+        $this->saveItems();
         print "Item {$item->getId()} was added." . PHP_EOL . PHP_EOL;
         return $item;
     }
